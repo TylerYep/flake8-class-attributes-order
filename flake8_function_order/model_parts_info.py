@@ -1,8 +1,10 @@
 import ast
-from typing import Any, Dict, List, Mapping
+from typing import Any, Dict, List, Mapping, Union
 
 
-def get_model_parts_info(model_ast, weights: Mapping[str, int]) -> List[Dict[str, Any]]:
+def get_model_parts_info(
+    model_ast: ast.ClassDef, weights: Mapping[str, int]
+) -> List[Dict[str, Any]]:
     parts_info = []
     for child_node in model_ast.body:
         node_type = get_model_node_type(child_node)
@@ -18,27 +20,23 @@ def get_model_parts_info(model_ast, weights: Mapping[str, int]) -> List[Dict[str
     return parts_info
 
 
-def get_model_node_type(child_node) -> str:
-    direct_node_types_mapping = [
-        (ast.If, lambda n: "if"),
-        (ast.Pass, lambda n: "pass"),
-        ((ast.Assign, ast.AnnAssign), lambda n: get_assighment_type(n)),
-        ((ast.FunctionDef, ast.AsyncFunctionDef), lambda n: get_funcdef_type(n)),
-        (
-            ast.Expr,
-            lambda n: "docstring" if isinstance(n.value, ast.Str) else "expression",
-        ),
-        (
-            ast.ClassDef,
-            lambda n: "meta_class" if child_node.name == "Meta" else "nested_class",
-        ),
-    ]
-    for type_or_type_tuple, type_getter in direct_node_types_mapping:
-        if isinstance(child_node, type_or_type_tuple):  # type: ignore
-            return type_getter(child_node)
+def get_model_node_type(child_node: ast.AST) -> str:
+    if isinstance(child_node, ast.If):
+        return "if"
+    if isinstance(child_node, ast.Pass):
+        return "pass"
+    if isinstance(child_node, (ast.Assign, ast.AnnAssign)):
+        return get_assighment_type(child_node)
+    if isinstance(child_node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        return get_funcdef_type(child_node)
+    if isinstance(child_node, ast.Expr):
+        return "docstring" if isinstance(child_node.value, ast.Str) else "expression"
+    if isinstance(child_node, ast.ClassDef):
+        return "meta_class" if child_node.name == "Meta" else "nested_class"
+    return ""
 
 
-def get_assighment_type(child_node) -> str:
+def get_assighment_type(child_node: Union[ast.Assign, ast.AnnAssign]) -> str:
     assignee_node = (
         child_node.target
         if isinstance(child_node, ast.AnnAssign)
@@ -51,7 +49,7 @@ def get_assighment_type(child_node) -> str:
     return "field"
 
 
-def get_funcdef_type(child_node) -> str:
+def get_funcdef_type(child_node: Union[ast.FunctionDef, ast.AsyncFunctionDef]) -> str:
     special_methods_names = {
         "__new__",
         "__init__",
