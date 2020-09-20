@@ -1,5 +1,3 @@
-
-
 class A:
     @classmethod
     def _get_favicon_path(cls, object_name: str):

@@ -1,7 +1,4 @@
-
-
 class Foo:
-
     class Meta:
         a = 3
 
@@ -18,7 +15,6 @@ class Foo:
     def _bar(self):
         ...
 
-
     @staticmethod
     def egg():
         ...
@@ -26,7 +22,6 @@ class Foo:
     @staticmethod
     def _egg():
         ...
-
 
     @classmethod
     def foobar(cls):

@@ -1,5 +1,3 @@
-
-
 class Foo:
     CONSTANT = True
 
@@ -19,7 +17,6 @@ class Foo:
     @staticmethod
     def _egg():
         ...
-
 
     @classmethod
     def _foobar(cls):

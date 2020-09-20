@@ -1,47 +1,46 @@
 class A:
-
     def foo(self):
-      pass
+        pass
 
     def __new__(self):
         pass
 
-class B:
 
+class B:
     def foo(self):
-      pass
+        pass
 
     def __init__(self):
-      pass
+        pass
+
 
 class C:
-
     def foo(self):
-      pass
+        pass
 
     def __post_init__(self):
-      pass
+        pass
+
 
 class D:
-
     def foo(self):
-      pass
+        pass
 
     def __str__(self):
-      pass
+        pass
+
 
 class E:
-
     def foo(self):
-      pass
+        pass
 
     def save(self):
-      pass
+        pass
+
 
 class F:
-
     def foo(self):
-      pass
+        pass
 
     def delete(self):
-      pass
+        pass

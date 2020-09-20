@@ -1,5 +1,3 @@
-
-
 class Foo:
     CONSTANT = 42
 
