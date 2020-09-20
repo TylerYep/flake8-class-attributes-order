@@ -1,7 +1,7 @@
 import ast
 from typing import Iterator, List, Tuple
 
-from flake8_function_order import __version__ as version
+from flake8_function_order import __version__
 from flake8_function_order.model_parts_info import get_model_parts_info
 from flake8_function_order.ordering_errors import get_ordering_errors
 
@@ -9,11 +9,11 @@ from flake8_function_order.ordering_errors import get_ordering_errors
 class ClassFunctionOrderChecker:
 
     name = "flake8-function-order"
-    version = version
+    version = __version__
 
     def __init__(self, tree: ast.Module, filename: str):
-        self.filename = filename
         self.tree = tree
+        self.filename = filename
 
     def run(self) -> Iterator[Tuple[int, int, str, type]]:
         weight_info = {

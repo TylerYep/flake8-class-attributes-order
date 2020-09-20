@@ -1,9 +1,4 @@
-# flake8-class-attributes-order
-
-[![Build Status](https://travis-ci.org/best-doctor/flake8-class-attributes-order.svg?branch=master)](https://travis-ci.org/best-doctor/flake8-class-attributes-order)
-[![Maintainability](https://api.codeclimate.com/v1/badges/28b7cd9d0714ec4b93a3/maintainability)](https://codeclimate.com/github/best-doctor/flake8-class-attributes-order/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/28b7cd9d0714ec4b93a3/test_coverage)](https://codeclimate.com/github/best-doctor/flake8-class-attributes-order/test_coverage)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/flake8-class-attributes-order)
+# flake8-function-order
 
 An extension for flake8 to report on wrong class attributes order and
 class level logic.
@@ -48,53 +43,7 @@ class PhoneForm(forms.Form):
 ## Installation
 
 ```
-pip install flake8-class-attributes-order
-```
-
-## Configuration
-
-### Strict mode
-
-There is another preconfigured order that is more strict on private subtypes:
-
-- `__new__`
-- `__init__`
-- `__post_init__`
-- other magic method
-- `@property`
-- `@staticmethod`
-- `@classmethod`
-- other methods
-- private `@property`
-- private `@staticmethod`
-- private `@classmethod`
-- other private methods
-
-To enable strict validation, please set the flag in your config file:
-
-```
-[flake8]
-use_class_attributes_order_strict_mode = True
-```
-
-### Manual order configuration
-
-Order can be manually configured via `class_attributes_order` config setting.
-
-For example, if you prefer to put `class Meta` after constants and fields:
-
-```
-[flake8]
-class_attributes_order =
-    field,
-    meta_class,
-    nested_class,
-    magic_method,
-    property_method,
-    static_method,
-    class_method,
-    method,
-    private_method
+pip install flake8-function-order
 ```
 
 Configurable options:
@@ -133,29 +82,6 @@ For example, you can define order of each supported magic method
 (`__new__`, `__str__`, etc.), or set `magic_method`
 to allow any order among them or even just use `method`
 
-## Example
-
-```python
-DEBUG = True
-
-
-class User:
-    def fetch_info_from_crm(self):
-        pass
-
-    LOGIN_FIELD = 'email'  # wtf? this should be on top of class definition!
-
-
-class UserNode:
-    class Meta:
-        model = User
-
-    if DEBUG:  # not great idea at all
-        def is_synced_with_crm(self):
-            pass
-
-```
-
 Usage:
 
 ```terminal
@@ -172,22 +98,3 @@ Tested on Python 3.7.x and flake8 3.7.5.
 |:----------:|:--------------------------------------------------------:|
 |   CCE001   | Wrong class attributes order (`XXX should be after YYY`) |
 |   CCE002   | Class level expression detected                          |
-
-## Contributing
-
-We would love you to contribute to our project. It's simple:
-
-- Create an issue with bug you found or proposal you have.
-  Wait for approve from maintainer.
-- Create a pull request. Make sure all checks are green.
-- Fix review comments if any.
-- Be awesome.
-
-Here are useful tips:
-
-- You can run all checks and tests with `make check`. Please do it
-  before TravisCI does.
-- We use
-  [BestDoctor python styleguide](https://github.com/best-doctor/guides/blob/master/guides/en/python_styleguide.md).
-- We respect [Django CoC](https://www.djangoproject.com/conduct/).
-  Make soft, not bullshit.

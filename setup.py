@@ -2,24 +2,22 @@ from typing import Optional
 
 import setuptools
 
-package_name = "flake8_function_order"
 
-
-def get_version() -> Optional[str]:
-    with open("flake8_function_order/__init__.py", "r") as f:
+def get_version() -> str:
+    with open("flake8_function_order/__init__.py") as f:
         lines = f.readlines()
     for line in lines:
         if line.startswith("__version__"):
             return line.split("=")[-1].strip().strip("'")
-    return None
+    return ""
 
 
 with open("README.md") as f:
     LONG_DESCRIPTION = f.read()
 
 setuptools.setup(
-    name=package_name,
-    description="A flake8 extension that checks function order within a class",
+    name="flake8_function_order",
+    description="flake8 extension that checks function order within a class",
     classifiers=[
         "Environment :: Console",
         "Framework :: Flake8",
@@ -49,6 +47,6 @@ setuptools.setup(
     },
     url="https://github.com/TylerYep/flake8-function-order",
     license="MIT",
-    py_modules=[package_name],
+    py_modules=["flake8_function_order"],
     zip_safe=False,
 )
