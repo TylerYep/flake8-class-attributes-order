@@ -1,8 +1,8 @@
 import ast
-from typing import Mapping
+from typing import Any, Dict, List, Mapping
 
 
-def get_model_parts_info(model_ast, weights: Mapping[str, int]):
+def get_model_parts_info(model_ast, weights: Mapping[str, int]) -> List[Dict[str, Any]]:
     parts_info = []
     for child_node in model_ast.body:
         node_type = get_model_node_type(child_node)
@@ -78,6 +78,11 @@ def get_funcdef_type(child_node) -> str:
                 return decorator_names_to_types_map[f"private_{decorator_info.id}"]
 
             return decorator_names_to_types_map[decorator_info.id]
+        elif isinstance(decorator_info, ast.Attribute) and decorator_info.attr in (
+            "getter",
+            "setter",
+        ):
+            return decorator_names_to_types_map["property"]
     if child_node.name in special_methods_names:
         return child_node.name
     if child_node.name.startswith("__") and child_node.name.endswith("__"):

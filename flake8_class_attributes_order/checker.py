@@ -11,7 +11,7 @@ class ClassAttributesOrderChecker:
     name = "flake8-class-attributes-order"
     version = version
 
-    def __init__(self, tree, filename: str):
+    def __init__(self, tree: ast.Module, filename: str):
         self.filename = filename
         self.tree = tree
 
@@ -30,13 +30,13 @@ class ClassAttributesOrderChecker:
             "__init__": 10,
             "__post_init__": 11,
             "__str__": 12,
-            "magic_method": 12,
+            "magic_method": 13,
             "property_method": 20,
             "private_property_method": 21,
-            "static_method": 22,
-            "private_static_method": 23,
-            "class_method": 24,
-            "private_class_method": 25,
+            "class_method": 22,
+            "private_class_method": 23,
+            "static_method": 24,
+            "private_static_method": 25,
             "method": 26,
             "private_method": 28,
         }
