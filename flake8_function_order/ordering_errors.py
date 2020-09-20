@@ -6,12 +6,9 @@ def get_ordering_errors(
     model_parts_info: List[Dict[str, Any]]
 ) -> List[Tuple[int, int, str]]:
     errors = []
-    for model_part, next_model_part in zip(
-        model_parts_info, model_parts_info[1:] + [None]  # type: ignore
-    ):
+    for model_part, next_model_part in zip(model_parts_info[:-1], model_parts_info[1:]):
         if (
-            next_model_part
-            and model_part["model_name"] == next_model_part["model_name"]
+            model_part["model_name"] == next_model_part["model_name"]
             and model_part["weight"] > next_model_part["weight"]
         ):
             errors.append(
