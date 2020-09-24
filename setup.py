@@ -1,5 +1,3 @@
-from typing import Optional
-
 import setuptools
 
 
@@ -8,7 +6,7 @@ def get_version() -> str:
         lines = f.readlines()
     for line in lines:
         if line.startswith("__version__"):
-            return line.split("=")[-1].strip().strip("'")
+            return line.split("=")[-1].strip().strip("'").strip("-")
     return ""
 
 
@@ -16,7 +14,7 @@ with open("README.md") as f:
     LONG_DESCRIPTION = f.read()
 
 setuptools.setup(
-    name="flake8_function_order",
+    name="flake8-function-order",
     description="flake8 extension that checks function order within a class",
     classifiers=[
         "Environment :: Console",
@@ -30,13 +28,13 @@ setuptools.setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
-    long_description=LONG_DESCRIPTION,
+    long_degscription=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
     python_requires=">=3.6",
     include_package_data=True,
     keywords="flake8",
-    version=get_version(),
+    version="0.0.1",
     author="Tyler Yep",
     author_email="tyep@cs.stanford.edu",
     install_requires=["flake8", "setuptools"],

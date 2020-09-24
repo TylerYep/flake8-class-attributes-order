@@ -1,7 +1,7 @@
 # flake8-function-order
 
 An extension for flake8 to report on wrong class attributes order and
-class level logic.
+class level logic, adapted from the `flake8-class-attributes-order` package by @best-doctor.
 
 The validator can extract class attribute type: docstring, property,
 nested class, `GLOBAL_VAR`, etc.
