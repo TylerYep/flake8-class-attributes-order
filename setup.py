@@ -6,7 +6,7 @@ def get_version() -> str:
         lines = f.readlines()
     for line in lines:
         if line.startswith("__version__"):
-            return line.split("=")[-1].strip().strip("'").strip("-")
+            return line.split("=")[-1].strip().strip("\"").strip("-")
     return ""
 
 
