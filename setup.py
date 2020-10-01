@@ -34,7 +34,7 @@ setuptools.setup(
     python_requires=">=3.6",
     include_package_data=True,
     keywords="flake8",
-    version="0.0.1",
+    version=get_version(),
     author="Tyler Yep",
     author_email="tyep@cs.stanford.edu",
     install_requires=["flake8", "setuptools"],
