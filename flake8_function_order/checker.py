@@ -29,7 +29,6 @@ class ClassFunctionOrderChecker:
             "__new__": 9,
             "__init__": 10,
             "__post_init__": 11,
-            "__str__": 12,
             "magic_method": 13,
             "property_method": 20,
             "private_property_method": 21,

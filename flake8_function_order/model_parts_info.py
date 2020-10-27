@@ -1,6 +1,12 @@
 import ast
 from typing import Any, Dict, List, Mapping, Union
 
+SPECIAL_METHOD_NAMES = (
+    "__new__",
+    "__init__",
+    "__post_init__",
+)
+
 
 def get_model_parts_info(
     model_ast: ast.ClassDef, weights: Mapping[str, int]
@@ -50,12 +56,6 @@ def get_assighment_type(child_node: Union[ast.Assign, ast.AnnAssign]) -> str:
 
 
 def get_funcdef_type(child_node: Union[ast.FunctionDef, ast.AsyncFunctionDef]) -> str:
-    special_methods_names = {
-        "__new__",
-        "__init__",
-        "__post_init__",
-        "__str__",
-    }
     decorator_names_to_types_map = {
         "property": "property_method",
         "cached_property": "property_method",
@@ -81,7 +81,7 @@ def get_funcdef_type(child_node: Union[ast.FunctionDef, ast.AsyncFunctionDef]) -
             "setter",
         ):
             return decorator_names_to_types_map["property"]
-    if child_node.name in special_methods_names:
+    if child_node.name in SPECIAL_METHOD_NAMES:
         return child_node.name
     if child_node.name.startswith("__") and child_node.name.endswith("__"):
         return "magic_method"

@@ -1,6 +1,8 @@
 import ast
 from typing import Any, Dict, List, Tuple, Union
 
+from .model_parts_info import SPECIAL_METHOD_NAMES
+
 
 def get_ordering_errors(
     model_parts_info: List[Dict[str, Any]]
@@ -37,12 +39,6 @@ def get_ordering_errors(
 
 
 def get_node_name(node: ast.AST, node_type: str) -> str:
-    special_methods_names = (
-        "__new__",
-        "__init__",
-        "__post_init__",
-        "__str__",
-    )
     if node_type.endswith("docstring"):
         return "docstring"
     if node_type.endswith("meta_class"):
@@ -52,7 +48,7 @@ def get_node_name(node: ast.AST, node_type: str) -> str:
     if node_type.endswith("field"):
         assert isinstance(node, (ast.Assign, ast.AnnAssign))
         return get_name_for_field_node_type(node)
-    if node_type.endswith(("method", "nested_class") + special_methods_names):
+    if node_type.endswith(("method", "nested_class") + SPECIAL_METHOD_NAMES):
         return node.name  # type: ignore
     if node_type.endswith("expression"):
         return "<class_level_expression>"
