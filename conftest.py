@@ -1,10 +1,11 @@
 import ast
 import os
+from typing import List, Tuple
 
 from flake8_function_order.checker import ClassFunctionOrderChecker
 
 
-def run_validator_for_test_file(filename):
+def run_validator_for_test_file(filename: str) -> List[Tuple[int, int, str, type]]:
     test_file_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
         "tests",

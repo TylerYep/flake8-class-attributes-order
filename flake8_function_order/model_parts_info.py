@@ -1,5 +1,5 @@
 import ast
-from typing import Any, Dict, List, Mapping, Union
+from typing import Any, Dict, List, Union
 
 SPECIAL_METHOD_NAMES = (
     "__new__",
@@ -9,7 +9,7 @@ SPECIAL_METHOD_NAMES = (
 
 
 def get_model_parts_info(
-    model_ast: ast.ClassDef, weights: Mapping[str, int]
+    model_ast: ast.ClassDef, weights: Dict[str, int]
 ) -> List[Dict[str, Any]]:
     parts_info = []
     for child_node in model_ast.body:
@@ -71,12 +71,12 @@ def get_funcdef_type(child_node: Union[ast.FunctionDef, ast.AsyncFunctionDef]) -
             isinstance(decorator_info, ast.Name)
             and decorator_info.id in decorator_names_to_types_map
         ):
-
-            if child_node.name.startswith("_"):
-                return decorator_names_to_types_map[f"private_{decorator_info.id}"]
-
-            return decorator_names_to_types_map[decorator_info.id]
-        elif isinstance(decorator_info, ast.Attribute) and decorator_info.attr in (
+            return decorator_names_to_types_map[
+                f"private_{decorator_info.id}"
+                if child_node.name.startswith("_")
+                else decorator_info.id
+            ]
+        if isinstance(decorator_info, ast.Attribute) and decorator_info.attr in (
             "getter",
             "setter",
         ):
