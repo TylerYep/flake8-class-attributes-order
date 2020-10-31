@@ -1,5 +1,5 @@
 import ast
-from typing import Any, Dict, List, Union
+from typing import Dict, List, NamedTuple, Union
 
 SPECIAL_METHOD_NAMES = (
     "__new__",
@@ -8,20 +8,22 @@ SPECIAL_METHOD_NAMES = (
 )
 
 
+class ModelPart(NamedTuple):
+    model_name: str
+    node: ast.AST
+    type_: str
+    weight: int
+
+
 def get_model_parts_info(
     model_ast: ast.ClassDef, weights: Dict[str, int]
-) -> List[Dict[str, Any]]:
+) -> List[ModelPart]:
     parts_info = []
     for child_node in model_ast.body:
         node_type = get_model_node_type(child_node)
         if node_type in weights:
             parts_info.append(
-                {
-                    "model_name": model_ast.name,
-                    "node": child_node,
-                    "type": node_type,
-                    "weight": weights[node_type],
-                }
+                ModelPart(model_ast.name, child_node, node_type, weights[node_type])
             )
     return parts_info
 

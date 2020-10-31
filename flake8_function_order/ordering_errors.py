@@ -1,38 +1,34 @@
 import ast
-from typing import Any, Dict, List, Tuple, Union
+from typing import List, Tuple, Union
 
-from .model_parts_info import SPECIAL_METHOD_NAMES
+from .model_parts_info import SPECIAL_METHOD_NAMES, ModelPart
 
 
 def get_ordering_errors(
-    model_parts_info: List[Dict[str, Any]]
+    model_parts_info: List[ModelPart],
 ) -> List[Tuple[int, int, str]]:
     errors = []
     for model_part, next_model_part in zip(model_parts_info[:-1], model_parts_info[1:]):
-        if (
-            model_part["model_name"] == next_model_part["model_name"]
-            and model_part["weight"] > next_model_part["weight"]
-        ):
+        curr_name, curr_node, curr_type, curr_weight = model_part
+        next_name, next_node, next_type, next_weight = next_model_part
+        line_no, col_offset = curr_node.lineno, curr_node.col_offset
+
+        if curr_name == next_name and curr_weight > next_weight:
             errors.append(
                 (
-                    model_part["node"].lineno,
-                    model_part["node"].col_offset,
-                    "CCE001 {0}.{1} should be after {0}.{2}".format(
-                        model_part["model_name"],
-                        get_node_name(model_part["node"], model_part["type"]),
-                        get_node_name(next_model_part["node"], next_model_part["type"]),
-                    ),
+                    line_no,
+                    col_offset,
+                    f"CCE001 {curr_name}.{get_node_name(curr_node, curr_type)} should "
+                    f"be after {next_name}.{get_node_name(next_node, next_type)}",
                 )
             )
-        if model_part["type"] in ("expression", "if"):
+        if curr_type in ("expression", "if"):
             errors.append(
                 (
-                    model_part["node"].lineno,
-                    model_part["node"].col_offset,
-                    "CCE002 Class level expression detected in class {0}, line {1}".format(
-                        model_part["model_name"],
-                        model_part["node"].lineno,
-                    ),
+                    line_no,
+                    col_offset,
+                    "CCE002 Class level expression detected in "
+                    f"class {curr_name}, line {line_no}",
                 )
             )
     return errors
@@ -44,7 +40,7 @@ def get_node_name(node: ast.AST, node_type: str) -> str:
     if node_type.endswith("meta_class"):
         return "Meta"
     if node_type.endswith("constant"):
-        return node.target.id if isinstance(node, ast.AnnAssign) else node.targets[0].id  # type: ignore
+        return node.target.id if isinstance(node, ast.AnnAssign) else node.targets[0].id  # type: ignore  # noqa
     if node_type.endswith("field"):
         assert isinstance(node, (ast.Assign, ast.AnnAssign))
         return get_name_for_field_node_type(node)
