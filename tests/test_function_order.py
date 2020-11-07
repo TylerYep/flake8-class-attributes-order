@@ -1,4 +1,13 @@
+import configparser
+
 from conftest import run_validator_for_test_file
+from flake8_function_order.checker import ClassFunctionOrderChecker
+
+
+def test_version() -> None:
+    config = configparser.ConfigParser()
+    config.read("setup.cfg")
+    assert config["metadata"]["version"] == ClassFunctionOrderChecker.version
 
 
 def test_async_def_not_breaks_validator() -> None:

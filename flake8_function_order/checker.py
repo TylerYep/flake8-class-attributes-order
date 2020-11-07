@@ -1,21 +1,14 @@
 import ast
-import configparser
 from typing import Iterator, List, Tuple
 
 from flake8_function_order.model_parts_info import get_model_parts_info
 from flake8_function_order.ordering_errors import get_ordering_errors
 
 
-def get_version() -> str:
-    config = configparser.ConfigParser()
-    config.read("setup.cfg")
-    return config["metadata"]["version"]
-
-
 class ClassFunctionOrderChecker:
 
     name = "flake8-function-order"
-    version = get_version()
+    version = "0.0.5"
 
     def __init__(self, tree: ast.Module, filename: str) -> None:
         self.tree = tree
