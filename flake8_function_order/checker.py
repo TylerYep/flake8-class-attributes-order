@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import ast
-from typing import Iterator, List, Tuple
+from typing import Iterator
 
 from flake8_function_order.model_parts_info import get_model_parts_info
 from flake8_function_order.ordering_errors import get_ordering_errors
@@ -14,7 +16,7 @@ class ClassFunctionOrderChecker:
         self.tree = tree
         self.filename = filename
 
-    def run(self) -> Iterator[Tuple[int, int, str, type]]:
+    def run(self) -> Iterator[tuple[int, int, str, type]]:
         weight_info = {
             "docstring": 0,
             "pass": 1,
@@ -39,7 +41,7 @@ class ClassFunctionOrderChecker:
             "private_method": 28,
         }
         classes = [n for n in ast.walk(self.tree) if isinstance(n, ast.ClassDef)]
-        errors: List[Tuple[int, int, str]] = []
+        errors: list[tuple[int, int, str]] = []
         for class_def in classes:
             errors += get_ordering_errors(get_model_parts_info(class_def, weight_info))
 

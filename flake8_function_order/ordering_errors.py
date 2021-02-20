@@ -1,12 +1,13 @@
+from __future__ import annotations
+
 import ast
-from typing import List, Tuple, Union
 
 from .model_parts_info import SPECIAL_METHOD_NAMES, ModelPart
 
 
 def get_ordering_errors(
-    model_parts_info: List[ModelPart],
-) -> List[Tuple[int, int, str]]:
+    model_parts_info: list[ModelPart],
+) -> list[tuple[int, int, str]]:
     errors = []
     for model_part, next_model_part in zip(model_parts_info[:-1], model_parts_info[1:]):
         curr_name, curr_node, curr_type, curr_weight = model_part
@@ -53,16 +54,16 @@ def get_node_name(node: ast.AST, node_type: str) -> str:
     return ""
 
 
-def get_name_for_field_node_type(node: Union[ast.Assign, ast.AnnAssign]) -> str:
+def get_name_for_field_node_type(node: ast.Assign | ast.AnnAssign) -> str:
     default_name = "<class_level_assignment>"
     if isinstance(node, ast.AnnAssign):
         return node.target.id if isinstance(node.target, ast.Name) else default_name
-    if isinstance(node.targets[0], ast.Name):
-        return node.targets[0].id
-    if hasattr(node.targets[0], "attr"):
-        return node.targets[0].attr  # type: ignore
-    if isinstance(node.targets[0], ast.Tuple):
-        return ", ".join(
-            [e.id for e in node.targets[0].elts if isinstance(e, ast.Name)]
-        )
+
+    target = node.targets[0]
+    if isinstance(target, ast.Name):
+        return target.id
+    if isinstance(target, ast.Attribute):
+        return target.attr
+    if isinstance(target, ast.Tuple):
+        return ", ".join([e.id for e in target.elts if isinstance(e, ast.Name)])
     return default_name

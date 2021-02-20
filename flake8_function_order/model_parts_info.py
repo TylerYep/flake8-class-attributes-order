@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import ast
-from typing import Dict, List, NamedTuple, Union
+from typing import NamedTuple
 
 SPECIAL_METHOD_NAMES = (
     "__new__",
@@ -8,7 +10,7 @@ SPECIAL_METHOD_NAMES = (
 )
 
 
-class ModelPart(NamedTuple):
+class ModelPart(NamedTuple):  # pylint: disable=inherit-non-class
     model_name: str
     node: ast.AST
     type_: str
@@ -16,8 +18,8 @@ class ModelPart(NamedTuple):
 
 
 def get_model_parts_info(
-    model_ast: ast.ClassDef, weights: Dict[str, int]
-) -> List[ModelPart]:
+    model_ast: ast.ClassDef, weights: dict[str, int]
+) -> list[ModelPart]:
     parts_info = []
     for child_node in model_ast.body:
         node_type = get_model_node_type(child_node)
@@ -44,7 +46,7 @@ def get_model_node_type(child_node: ast.AST) -> str:
     return ""
 
 
-def get_assighment_type(child_node: Union[ast.Assign, ast.AnnAssign]) -> str:
+def get_assighment_type(child_node: ast.Assign | ast.AnnAssign) -> str:
     assignee_node = (
         child_node.target
         if isinstance(child_node, ast.AnnAssign)
@@ -57,7 +59,7 @@ def get_assighment_type(child_node: Union[ast.Assign, ast.AnnAssign]) -> str:
     return "field"
 
 
-def get_funcdef_type(child_node: Union[ast.FunctionDef, ast.AsyncFunctionDef]) -> str:
+def get_funcdef_type(child_node: ast.FunctionDef | ast.AsyncFunctionDef) -> str:
     decorator_names_to_types_map = {
         "property": "property_method",
         "cached_property": "property_method",
