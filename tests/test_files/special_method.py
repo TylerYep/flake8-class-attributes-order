@@ -2,7 +2,7 @@ class A:
     def foo(self):
         pass
 
-    def __new__(self):
+    def __new__(cls):
         pass
 
 

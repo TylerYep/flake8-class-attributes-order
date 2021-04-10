@@ -1,5 +1,7 @@
 # flake8-function-order
 
+[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/release/python-370/)
+
 An extension for flake8 to report on wrong class attributes order and
 class level logic, adapted from the `flake8-class-attributes-order` package by @best-doctor.
 
