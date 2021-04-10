@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import ast
-from typing import Iterator
+from collections.abc import Iterator
 
 from flake8_function_order.model_parts_info import get_model_parts_info
 from flake8_function_order.ordering_errors import get_ordering_errors
